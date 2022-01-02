@@ -1,31 +1,23 @@
 package banque;
 
+import java.util.Scanner;
+
 public class Caissier {
     // protected int nbCaissiers; // nombre de caissiers // C EST LA BANQUE QUI CONNAIT LE NB DE CAISSIERS
     protected Client c; // le Client du Caissier
     protected float tempsMoyTraitement; // temps moyent de traitement du caissier
-    protected float tempsMoyArriver; // temps moyen d'arriver de Clients
+    protected float tauxOcuppattion;
+    protected int nbClient;
+    private Scanner sc;
 
-    public Caissier() {
-        // nbCaissiers = nbC;
-        c = new Client();
-        tempsMoyTraitement = tempsT;
-        tempsMoyArriver = tempsA;
+    public Caissier(float[] tempsDeService) {
+        sc = new Scanner(System.in);
+        for(int i=0; i< Banque.getnbCaissier(); i++){
+            tempsDeService[i] = sc.nextInt();
+        }
     }
 
-    public float tempsMoyenService() {
-
-        return 0;
-    }
-
-    public int nbClients() {
-
-        return 0;
-    }
-
-    public float tauxOccupation() {
-
-        return 0;
+    public Caissier(float f) {
     }
 
     public boolean estLibre() {
