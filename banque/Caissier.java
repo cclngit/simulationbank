@@ -6,7 +6,7 @@ public class Caissier {
     protected float tempsMoyTraitement; // temps moyent de traitement du caissier
     protected float tempsMoyArriver; // temps moyen d'arriver de Clients
 
-    public Caissier(float tempsT, float tempsA) {
+    public Caissier() {
         // nbCaissiers = nbC;
         c = new Client();
         tempsMoyTraitement = tempsT;
