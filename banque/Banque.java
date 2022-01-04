@@ -20,6 +20,9 @@ public class Banque {
         fa = new FileAttente();
     }
     
+    public Banque() {
+    }
+
     public Caissier unCaussierLibre(){
         for(int i =0; i< nbCaissiers ; i++){
             if(c[i].estLibre())
@@ -30,5 +33,9 @@ public class Banque {
 
     public static float getnbCaissier(){
         return nbCaissiers;
+    }
+
+    public float getdureeSimulation(){
+        return dureeSimulation;
     }
 }
