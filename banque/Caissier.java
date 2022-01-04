@@ -18,6 +18,7 @@ public class Caissier {
     }
 
     public Caissier(float f) {
+        
     }
 
     public boolean estLibre() {
