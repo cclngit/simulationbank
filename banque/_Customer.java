@@ -1,15 +1,15 @@
 package banque;
 
-public class Customer {
+public class _Customer {
     private int customerID;
     private int transactionTime;
     private int arrivalTime;
 
-    Customer() {
+    _Customer() {
         this(1, 1, 1);
     }
 
-    Customer(int customerid, int transactionduration, int arrivaltime) {
+    _Customer(int customerid, int transactionduration, int arrivaltime) {
         customerID = customerid;
         transactionTime = transactionduration;
         arrivalTime = arrivaltime;
@@ -33,7 +33,7 @@ public class Customer {
 
     public static void main(String[] args) {
         // quick check!
-        Customer mycustomer = new Customer(20, 30, 40);
+        _Customer mycustomer = new _Customer(20, 30, 40);
         System.out.println("Customer Info:" + mycustomer);
     }
 

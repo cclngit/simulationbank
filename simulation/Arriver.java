@@ -4,20 +4,22 @@ import banque.Banque;
 import banque.Caissier;
 import banque.Client;
 
-public class Arriver {
+public class Arriver extends Evenement {
+    private static SED se;
     protected Banque bq;
     protected Client cl;
     protected Caissier cs;
     protected float clientSuivant;
 
     public Arriver(float clientSuivant2, Banque bq2) {
+        super(heure, se);
     }
 
     public void traiter(){
         bq = new Banque();
         cl = new Client();
         if(clientSuivant < bq.getdureeSimulation()){
-            bq.add(new Arriver(clientSuivant, bq));
+            bq.ajo(new Arriver(clientSuivant, bq));
         }
 
 

@@ -1,5 +1,10 @@
 package simulation;
 
-public class Depart {
+public class Depart extends Evenement {
+
+    public Depart(float heure, SED se) {
+        super(heure, se);
+        //TODO Auto-generated constructor stub
+    }
     
 }

@@ -1,24 +1,24 @@
 package banque;
 
-public class Teller {
+public class _Teller {
     // start time and end time of current interval
     private int startTime;
     private int endTime;
 
     // teller id and current customer which is served by this teller
     private int tellerID;
-    private Customer currentCustomer;
+    private _Customer currentCustomer;
 
     // for keeping statistical data
     private int totalFreeTime;
     private int totalBusyTime;
     private int totalCustomers;
 
-    Teller() {
+    _Teller() {
         this(1);
     }
 
-    Teller(int tellerId) {
+    _Teller(int tellerId) {
         tellerID = tellerId;
     }
 
@@ -28,7 +28,7 @@ public class Teller {
         return tellerID;
     }
 
-    Customer getCustomer() {
+    _Customer getCustomer() {
         return currentCustomer;
     }
 
@@ -40,7 +40,7 @@ public class Teller {
 
     // functions for state transition
 
-    void freeToBusy(Customer currentCustomer, int currentTime) {
+    void freeToBusy(_Customer currentCustomer, int currentTime) {
         // Main goal : switch from free interval to busy interval
         //
         // end free interval, start busy interval
@@ -55,7 +55,7 @@ public class Teller {
         totalCustomers++;
     }
 
-    Customer busyToFree() {
+    _Customer busyToFree() {
         // Main goal : switch from busy interval to free interval
         //
         // steps : update totalBusyTime

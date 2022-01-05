@@ -1,7 +1,8 @@
 package banque;
 
+import simulation.SED;
 
-public class Banque {
+public class Banque extends SED{
     protected static int nbCaissiers;
     protected int tempsEntreArrivee;
     protected float tempsDeService[];
