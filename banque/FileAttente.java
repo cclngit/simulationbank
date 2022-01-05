@@ -1,5 +1,8 @@
 package banque;
 
 public class FileAttente {
-    //hhgknifdhhlldgyvsduy
+    
+    public void ajouter(Client c){
+
+    }
 }

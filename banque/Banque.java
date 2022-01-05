@@ -39,4 +39,12 @@ public class Banque extends SED{
     public float getdureeSimulation(){
         return dureeSimulation;
     }
+
+    public double gettempsEntreArrivee() {
+        return tempsEntreArrivee;
+    }
+
+    public FileAttente fileAttente() {
+        return fa;
+    }
 }

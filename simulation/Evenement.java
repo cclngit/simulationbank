@@ -9,4 +9,11 @@ public class Evenement {
         this.s = se;
         
     }
+
+    public float heure(){
+        return heure;
+    }
+
+    public void traiter() {
+    }
 }
