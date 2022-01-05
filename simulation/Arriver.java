@@ -6,8 +6,6 @@ import banque.Client;
 
 public class Arriver extends Evenement {
     private static SED se;
-    protected Banque bq;
-    protected Client cl;
     protected Caissier cs;
     protected float clientSuivant;
 
@@ -16,23 +14,16 @@ public class Arriver extends Evenement {
     }
 
     public void traiter(){
-        bq = new Banque();
-        cl = new Client();
+        Banque bq = new Banque();
+        Client cl = new Client();
+        clientSuivant = (float) (heure + Poisson.next(bq.gettempsEntreArrivee()));
         if(clientSuivant < bq.getdureeSimulation()){
-            bq.ajo(new Arriver(clientSuivant, bq));
+            bq.ajouter(new Arriver(clientSuivant, bq));
+        Caissier cs = bq.unCaussierLibre();
+        if(cs)
+            cs.servic(cl);
+        else
+            bq.fileAttente().ajouter(cl);
         }
-
-
     }
-
-    /*Banque *s = (Banque *)ds;
-    Client *c = new Client(_time, s);
-    double next = _time + Poisson::next(s->tempsMoyenEntreArrivees());
-    if (next < s->dureePrevue())
-        s->add(new Arrivee(next, s));
-    Caissier *cs = s->unCaissierLibre();
-    if (cs)
-        cs->servir(c);
-    else
-        s->fileAttente()->ajouter(c);*/
 }
