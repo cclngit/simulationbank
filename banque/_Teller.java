@@ -5,7 +5,7 @@ public class _Teller {
     private int startTime;
     private int endTime;
 
-    // teller id and current customer which is served by this teller
+    // teller id and current customer which is served by this teller uhdugdidg
     private int tellerID;
     private _Customer currentCustomer;
 
