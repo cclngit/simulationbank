@@ -13,17 +13,17 @@ public class Arriver extends Evenement {
         super(heure, se);
     }
 
-    public void traiter(){
+    public void traiter() {
         Banque bq = new Banque();
         Client cl = new Client();
         clientSuivant = (float) (heure + Poisson.next(bq.gettempsEntreArrivee()));
-        if(clientSuivant < bq.getdureeSimulation()){
+        if (clientSuivant < bq.getdureeSimulation()) {
             bq.ajouter(new Arriver(clientSuivant, bq));
-        Caissier cs = bq.unCaussierLibre();
-        if(cs != null)
-            cs.servic(cl);
-        else
-            bq.fileAttente().ajouter(cl);
+            Caissier cs = bq.unCaussierLibre();
+            if (cs != null)
+                cs.servic(cl);
+            else
+                bq.fileAttente().ajouter(cl);
         }
     }
 }
