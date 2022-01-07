@@ -8,6 +8,7 @@ public class Caissier {
     protected float tempsMoyTraitement; // temps moyent de traitement du caissier
     protected float tauxOcuppattion;
     protected int nbClient;
+    protected boolean libre;
     private Scanner sc;
 
     public Caissier(float[] tempsDeService) {
@@ -15,6 +16,7 @@ public class Caissier {
         for(int i=0; i< Banque.getnbCaissier(); i++){
             tempsDeService[i] = sc.nextInt();
         }
+        sc.close();
     }
 
     public Caissier(float f) {
@@ -22,7 +24,7 @@ public class Caissier {
     }
 
     public boolean estLibre() {
-
+        
         return true;
     }
 

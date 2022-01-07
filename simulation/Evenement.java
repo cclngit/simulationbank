@@ -6,8 +6,7 @@ public class Evenement {
 
     public Evenement(float heure, SED se){
         Evenement.heure = heure;
-        this.s = se;
-        
+        se.ajouter(this);
     }
 
     public float heure(){

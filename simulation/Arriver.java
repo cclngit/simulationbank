@@ -20,7 +20,7 @@ public class Arriver extends Evenement {
         if(clientSuivant < bq.getdureeSimulation()){
             bq.ajouter(new Arriver(clientSuivant, bq));
         Caissier cs = bq.unCaussierLibre();
-        if(cs)
+        if(cs != null)
             cs.servic(cl);
         else
             bq.fileAttente().ajouter(cl);
