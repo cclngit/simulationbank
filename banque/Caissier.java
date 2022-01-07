@@ -11,20 +11,14 @@ public class Caissier {
     protected boolean libre;
     private Scanner sc;
 
-    public Caissier(float[] tempsDeService) {
+    public Caissier(float tempsDeService) {
         sc = new Scanner(System.in);
-        for(int i=0; i< Banque.getnbCaissier(); i++){
-            tempsDeService[i] = sc.nextInt();
-        }
+        tempsDeService = sc.nextInt();
         sc.close();
     }
 
-    public Caissier(float f) {
-        
-    }
-
     public boolean estLibre() {
-        
+
         return true;
     }
 
