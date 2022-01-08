@@ -1,6 +1,9 @@
 package banque;
 
-import simulation.SED;
+import simulation.*;
+
+import java.util.Scanner;
+import java.util.concurrent.Callable;
 
 public class Banque extends SED {
     private int nbCaissiers;
@@ -8,8 +11,8 @@ public class Banque extends SED {
     private double tempsEntreArrivee;
     private double dureePrevue;
     private Caissier[] caissiers;
-
-    protected FileAttente fileAttente;
+    private FileAttente fileAttente;
+    private Resultat resultat;
 
     public Banque(double dureePrevue, int nbCaissiers, double tService, double tempsEntreArrivee) {
         super();
@@ -18,12 +21,14 @@ public class Banque extends SED {
         this.caissiers = new Caissier[nbCaissiers];
         this.tService = tService;
         this.tempsEntreArrivee = tempsEntreArrivee;
+        this.fileAttente = new FileAttente(this);
+        this.resultat = new Resultat();
     }
 
-    public Caissier unCaussierLibre() {
-        for (int i = 0; i < nbCaissiers; i++) {
-            if (c[i].estLibre())
-                return c[i];
+    public Caissier unCaissierLibre() {
+        for (int i = 0; i < caissiers.length; i++) {
+            if (caissiers[i].estLibre())
+                return caissiers[i];
         }
         return null;
     }
@@ -43,4 +48,30 @@ public class Banque extends SED {
     public FileAttente getFileAttente() {
         return fileAttente;
     }
+
+    public void nouveauClient(double heureArrivee){
+        Client client = new Client(heureArrivee);
+        Evenement arrivee = new Arriver(heureArrivee, this);
+        this.ajouter(arrivee);
+        this.fileAttente.ajouter(client);
+    }
+
+    public static void main(String[] args) {
+        double dureePrevue ; int nbCaissiers; double tService; double tempsEntreArrivee;
+        Scanner sc = new Scanner(System.in);
+        System.out.print("dureePrevue : ");
+        dureePrevue = sc.nextDouble();
+        System.out.print("nbCaissiers : ");
+        nbCaissiers = sc.nextInt();
+        System.out.print("tService : ");
+        tService = sc.nextDouble();
+        System.out.print("tempsEntreArrivee : ");
+        tempsEntreArrivee = sc.nextDouble();
+        sc.close();
+
+        Banque banque = new Banque(dureePrevue, nbCaissiers, tService, tempsEntreArrivee);
+        banque.executer();
+
+    }
+
 }

@@ -10,20 +10,24 @@ public class SED extends LinkedList<Evenement>{
 
     }
 
-    public void ajouter(Evenement e) {
-        this.add(e); //Ajout un evenement discret
-    }
+    public void ajouter(Evenement e) { this.add(e);}  //Ajoute un evenement discret
 
     public double getTemps() {
         return temps; //return le temps 
     }
 
     public void executer() {
-        while (this.size() != 0) { //tant que la list n'est pas vide
-            Evenement e = this.getFirst(); //
+        while (this.size() != 0) { //tant que la liste n'est pas vide
+            Evenement e = this.getFirst(); //le nouvel evenement est le
             this.removeFirst();
-            this.temps = e.heure();
-            e.traiter();
+            this.temps = e.getHeure();
+            e.lancer();
         }
+    }
+
+    public void notifierArrivee( double temps) {
+    }
+
+    public void notifierDepart( double temps) {
     }
 }

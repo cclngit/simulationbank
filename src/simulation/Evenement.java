@@ -2,11 +2,11 @@ package simulation;
 
 public abstract class Evenement {
     private double heure;
-    private SED s;
+    private SED sed;
 
     public Evenement(double heure, SED sed) {
         this.heure = heure;
-        sed.ajouter(this);
+        this.sed = sed;
     }
 
     public double getHeure() {
@@ -14,4 +14,8 @@ public abstract class Evenement {
     }
 
     public abstract void lancer();
+
+    public SED getSed() {
+        return sed;
+    }
 }

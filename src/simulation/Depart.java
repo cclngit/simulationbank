@@ -8,7 +8,8 @@ public class Depart extends Evenement {
 
     @Override
     public void lancer() {
-
+        this.getSed().notifierDepart(this.getHeure());
     }
+
 
 }
