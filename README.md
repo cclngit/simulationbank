@@ -27,3 +27,5 @@ On souhaite obtenir, a la fin de la simulation, les resultats suivants :
 ## Comment lancer le programme
 
 - Executer le fichier JAR nommé : simulationbank.jar
+
+<img src="./screenshot.png">
