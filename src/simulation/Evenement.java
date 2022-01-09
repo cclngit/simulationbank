@@ -1,21 +1,30 @@
 package simulation;
 
+import java.util.ArrayList;
+
 public abstract class Evenement {
-    private double heure;
-    private SED sed;
+    private double temps;
+    private ArrayList<EvenementEcouteur> abonnes;
 
-    public Evenement(double heure, SED sed) {
-        this.heure = heure;
-        this.sed = sed;
+    public Evenement(double temps, SED sed) {
+        this.temps = temps;
+        this.abonnes = new ArrayList<>();
+        sed.ajouter(this);
+        this.souscrire(sed);
     }
 
-    public double getHeure() {
-        return this.heure;
+    public double getTemps() {
+        return this.temps;
     }
 
-    public abstract void lancer();
-
-    public SED getSed() {
-        return sed;
+    public void souscrire(EvenementEcouteur abonne){
+        this.abonnes.add(abonne);
     }
+
+    public void lancer(){
+        for (EvenementEcouteur abonne: this.abonnes) {
+            abonne.notifier(this);
+        }
+    }
+
 }

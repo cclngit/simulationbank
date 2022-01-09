@@ -6,10 +6,4 @@ public class Depart extends Evenement {
         super(heure, sed);
     }
 
-    @Override
-    public void lancer() {
-        this.getSed().notifierDepart(this.getHeure());
-    }
-
-
 }

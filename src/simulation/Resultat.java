@@ -59,4 +59,20 @@ public class Resultat {
     public void setTempsMoyAttenteClient(double tempsMoyAttenteClient) {
         this.tempsMoyAttenteClient = tempsMoyAttenteClient;
     }
+
+    public void incrementNbClient() {
+        this.nbClient++;
+    }
+
+    @Override
+    public String toString() {
+        return "Resultat{" +
+                "dureeReelSimulation=" + dureeReelSimulation +
+                ", longueurMaxFileAttente=" + longueurMaxFileAttente +
+                ", longueurMoyFileAttente=" + longueurMoyFileAttente +
+                ", nbClient=" + nbClient +
+                ", tauxOcccupationCaissier=" + tauxOcccupationCaissier +
+                ", tempsMoyAttenteClient=" + tempsMoyAttenteClient +
+                '}';
+    }
 }

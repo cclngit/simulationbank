@@ -5,7 +5,7 @@ import simulation.*;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 
-public class Banque extends SED {
+public class Banque extends SED{
     private int nbCaissiers;
     private double tService;
     private double tempsEntreArrivee;
@@ -19,6 +19,11 @@ public class Banque extends SED {
         this.dureePrevue = dureePrevue;
         this.nbCaissiers = nbCaissiers;
         this.caissiers = new Caissier[nbCaissiers];
+        for (int i = 0; i < nbCaissiers; i++){
+            double tpsService = Poisson.next(tService);
+            System.out.println("tpsService : " + tpsService);
+            this.caissiers[i] = new Caissier(tpsService, this);
+        }
         this.tService = tService;
         this.tempsEntreArrivee = tempsEntreArrivee;
         this.fileAttente = new FileAttente(this);
@@ -49,29 +54,69 @@ public class Banque extends SED {
         return fileAttente;
     }
 
+    public Resultat getResultat() {
+        return resultat;
+    }
+
     public void nouveauClient(double heureArrivee){
-        Client client = new Client(heureArrivee);
         Evenement arrivee = new Arriver(heureArrivee, this);
         this.ajouter(arrivee);
-        this.fileAttente.ajouter(client);
     }
 
-    public static void main(String[] args) {
-        double dureePrevue ; int nbCaissiers; double tService; double tempsEntreArrivee;
-        Scanner sc = new Scanner(System.in);
-        System.out.print("dureePrevue : ");
-        dureePrevue = sc.nextDouble();
-        System.out.print("nbCaissiers : ");
-        nbCaissiers = sc.nextInt();
-        System.out.print("tService : ");
-        tService = sc.nextDouble();
-        System.out.print("tempsEntreArrivee : ");
-        tempsEntreArrivee = sc.nextDouble();
-        sc.close();
+    @Override
+    public void notifier(Evenement evenement) {
 
-        Banque banque = new Banque(dureePrevue, nbCaissiers, tService, tempsEntreArrivee);
-        banque.executer();
+        if (evenement instanceof Arriver) {
+            System.out.println("Client arrivee : " + evenement.getTemps());
+            this.resultat.incrementNbClient();
+            this.fileAttente.ajouter(new Client(evenement.getTemps()));
 
+            //  A l'arriver d'un client on regarde si un caissier est libre
+            Caissier caissier = this.unCaissierLibre();
+            if (caissier != null){
+                caissier.servir(this.fileAttente.retirer(), evenement.getTemps());
+            }else{
+                System.out.println("TU RESTE LA !!!");
+            }
+        }else if (evenement instanceof Depart){
+            System.out.println("Client a fuis : " + evenement.getTemps());
+            this.resultat.setDureeReelSimulation(evenement.getTemps());
+
+            //  On verifie que la file n'est pas vide pour re adonner du travail au caissier
+            if (!this.fileAttente.estVide()){
+                Caissier caissier = this.unCaissierLibre();
+                if (caissier != null){
+                    caissier.servir(this.fileAttente.retirer(), evenement.getTemps());
+                }
+            }
+        }
+        this.getResultat().setLongueurMaxFileAttente(this.fileAttente.getLongueurMax());
+
+        for (Caissier c: this.caissiers) {
+            c.liberer(evenement.getTemps());
+        }
     }
 
+    @Override
+    public void executer() {
+
+        //  Enregistrer les arrivees
+        double duree = 0;
+        double tempsArrivee = Poisson.next();
+
+        while (duree < dureePrevue) {
+            if (duree > tempsArrivee) {
+                this.nouveauClient(tempsArrivee);
+                tempsArrivee += Poisson.next(tempsEntreArrivee);
+
+            }
+            duree+=0.001;
+            this.ajouter(new Check(duree, this));
+        }
+
+        super.executer();
+
+        System.out.println(this.fileAttente.size());
+
+    }
 }

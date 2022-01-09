@@ -5,6 +5,7 @@ import java.util.LinkedList;
 public class FileAttente extends LinkedList<Client> {
 
     private Banque banque;
+    private int longueurMax;
 
     public FileAttente(Banque banque){
         this.banque = banque;
@@ -14,9 +15,10 @@ public class FileAttente extends LinkedList<Client> {
         return this.isEmpty();
     }
 
-    public int longueurMax() {
-        return 0;
+    public int getLongueurMax() {
+        return longueurMax;
     }
+
     public double longueurMoyenne() {
         return 0;
     }
@@ -26,6 +28,9 @@ public class FileAttente extends LinkedList<Client> {
 
     public void ajouter(Client c){
         this.add(c);
+        if (this.size() > this.longueurMax) {
+            this.longueurMax = this.size();
+        }
     }
 
     public Client retirer(){
