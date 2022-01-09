@@ -1,122 +1,83 @@
 package banque;
 
-import simulation.*;
+import simulation.evenement.EvenementEcouteur;
 
-import java.util.Scanner;
-import java.util.concurrent.Callable;
+public class Banque {
+    public final double DUREE_SERVICE_CAISSIER;
+    private FileAttenteClient fileAttente;
+    private Caissier[] employers;
 
-public class Banque extends SED{
-    private int nbCaissiers;
-    private double tService;
-    private double tempsEntreArrivee;
-    private double dureePrevue;
-    private Caissier[] caissiers;
-    private FileAttente fileAttente;
-    private Resultat resultat;
+    public Banque(double dureeServiceCaissier, int nombreCaissiers, EvenementEcouteur sonnetteProchainClient) {
+        DUREE_SERVICE_CAISSIER = dureeServiceCaissier;
+        this.fileAttente = new FileAttenteClient();
+        this.initialiserLesCaissiers(nombreCaissiers, sonnetteProchainClient);
+    }
 
-    public Banque(double dureePrevue, int nbCaissiers, double tService, double tempsEntreArrivee) {
-        super();
-        this.dureePrevue = dureePrevue;
-        this.nbCaissiers = nbCaissiers;
-        this.caissiers = new Caissier[nbCaissiers];
-        for (int i = 0; i < nbCaissiers; i++){
-            double tpsService = Poisson.next(tService);
-            System.out.println("tpsService : " + tpsService);
-            this.caissiers[i] = new Caissier(tpsService, this);
+    public void initialiserLesCaissiers(int nombre, EvenementEcouteur sonnetteProchainClient){
+        this.employers = new Caissier[nombre];
+        for (int i = 0; i < nombre; i++) {
+            this.employers[i] = new Caissier(this, sonnetteProchainClient);
         }
-        this.tService = tService;
-        this.tempsEntreArrivee = tempsEntreArrivee;
-        this.fileAttente = new FileAttente(this);
-        this.resultat = new Resultat();
     }
 
-    public Caissier unCaissierLibre() {
-        for (int i = 0; i < caissiers.length; i++) {
-            if (caissiers[i].estLibre())
-                return caissiers[i];
-        }
-        return null;
-    }
-
-    public int getNbCaissiers() {
-        return nbCaissiers;
-    }
-
-    public double getDureePrevue() {
-        return dureePrevue;
-    }
-
-    public double getTempsEntreArrivee() {
-        return tempsEntreArrivee;
-    }
-
-    public FileAttente getFileAttente() {
+    public FileAttenteClient getFileAttente() {
         return fileAttente;
     }
 
-    public Resultat getResultat() {
-        return resultat;
-    }
+    public void unClientEstArrivee(Client client){
+        //  Quand un client arrive, on l'ajoute a la file d'attente
+        this.fileAttente.add(client);
 
-    public void nouveauClient(double heureArrivee){
-        Evenement arrivee = new Arriver(heureArrivee, this);
-        this.ajouter(arrivee);
-    }
-
-    @Override
-    public void notifier(Evenement evenement) {
-
-        if (evenement instanceof Arriver) {
-            System.out.println("Client arrivee : " + evenement.getTemps());
-            this.resultat.incrementNbClient();
-            this.fileAttente.ajouter(new Client(evenement.getTemps()));
-
-            //  A l'arriver d'un client on regarde si un caissier est libre
-            Caissier caissier = this.unCaissierLibre();
-            if (caissier != null){
-                caissier.servir(this.fileAttente.retirer(), evenement.getTemps());
-            }else{
-                System.out.println("TU RESTE LA !!!");
+        //  On verifie qu'un caissier est disponible pour le prendre en charge
+        for (Caissier caissier: this.employers){
+            if (caissier.estDisponible(client.getTempsArrivee())){
+                caissier.prendreUnClientDansFileAttente(client.getTempsArrivee());
             }
-        }else if (evenement instanceof Depart){
-            System.out.println("Client a fuis : " + evenement.getTemps());
-            this.resultat.setDureeReelSimulation(evenement.getTemps());
-
-            //  On verifie que la file n'est pas vide pour re adonner du travail au caissier
-            if (!this.fileAttente.estVide()){
-                Caissier caissier = this.unCaissierLibre();
-                if (caissier != null){
-                    caissier.servir(this.fileAttente.retirer(), evenement.getTemps());
-                }
-            }
-        }
-        this.getResultat().setLongueurMaxFileAttente(this.fileAttente.getLongueurMax());
-
-        for (Caissier c: this.caissiers) {
-            c.liberer(evenement.getTemps());
         }
     }
 
-    @Override
-    public void executer() {
-
-        //  Enregistrer les arrivees
-        double duree = 0;
-        double tempsArrivee = Poisson.next();
-
-        while (duree < dureePrevue) {
-            if (duree > tempsArrivee) {
-                this.nouveauClient(tempsArrivee);
-                tempsArrivee += Poisson.next(tempsEntreArrivee);
-
+    public void unClientEstParti(double temps){
+        //  Quand un client part, on prend le client suivant
+        for (Caissier caissier : this.employers){
+            if (caissier.estDisponible(temps)){
+                caissier.prendreUnClientDansFileAttente(temps);
             }
-            duree+=0.001;
-            this.ajouter(new Check(duree, this));
         }
+    }
 
-        super.executer();
+    public Caissier[] getEmployers() {
+        return employers;
+    }
 
-        System.out.println(this.fileAttente.size());
+    public int nombreTotalDeClientsServis(){
+        int total = 0;
+        for (Caissier caissier : this.employers){
+            total += caissier.nombreDeClientServis();
+        }
+        return total;
+    }
 
+    public int[] nombreDeClientServisParEmployer(){
+        int[] resultats = new int[this.employers.length];
+        for (int i = 0; i < this.employers.length; i++){
+            resultats[i] = this.employers[i].nombreDeClientServis();
+        }
+        return resultats;
+    }
+
+    public double[] tauxOccupationParEmployer(double tempsTotal){
+        double[] resultats = new double[this.employers.length];
+        for (int i = 0; i < this.employers.length; i++){
+            resultats[i] = this.employers[i].tauxOccupationEnPourcentage(tempsTotal);
+        }
+        return resultats;
+    }
+
+    public double tempsAttenteMoyenClient(){
+        double temps = 0;
+        for (Caissier caissier : this.employers){
+            temps += caissier.tempsAttenteMoyenDeMesClient();
+        }
+        return temps / this.employers.length;
     }
 }
