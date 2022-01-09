@@ -28,4 +28,4 @@ On souhaite obtenir, a la fin de la simulation, les resultats suivants :
 
 - Executer le fichier JAR nommé : simulationbank.jar
 
-<img src="./screechot.png">
+<img src="./screeshot.png">
