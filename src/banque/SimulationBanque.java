@@ -11,6 +11,12 @@ import simulation.evenement.EvenementEcouteur;
 import java.util.Comparator;
 import java.util.Scanner;
 
+/**
+ * Classe permettant de modeliser une banque avec des evenement discret
+ *
+ * @version 2022-01-09
+ * @author ALTMANN
+ */
 public class SimulationBanque extends SED implements EvenementEcouteur {
 
     private Banque banque;
@@ -24,6 +30,10 @@ public class SimulationBanque extends SED implements EvenementEcouteur {
         this.dureeEntreArriveeClient = dureeEntreArriveeClient;
     }
 
+    /**
+     * Traite chronologiquement les evenements arriver et depart client
+     *
+     */
     @Override
     public void notifier(Evenement evenement) {
 
@@ -50,6 +60,10 @@ public class SimulationBanque extends SED implements EvenementEcouteur {
         }
     }
 
+    /**
+     * Trie les evenements dans l'ordre en faisant une comparaison
+     *
+     */
     public void trierEvenementDansOrdreChronologique(){
         this.sort(new Comparator<Evenement>() {
             @Override
@@ -59,6 +73,10 @@ public class SimulationBanque extends SED implements EvenementEcouteur {
         });
     }
 
+    /**
+     * Initialise le temps des arriver client
+     *
+     */
     public void initialiser(){
         double tempsArrivee = 0;
         while (tempsArrivee < this.dureeSimulation) {
@@ -78,6 +96,10 @@ public class SimulationBanque extends SED implements EvenementEcouteur {
                 '}';
     }
 
+    /**
+     * Format le resultat pour l'affichage
+     *
+     */
     public String resultat() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Duree reel simulation = " + this.dureeReelSimulation + "\n");

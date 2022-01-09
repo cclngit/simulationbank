@@ -6,6 +6,13 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Fenetre
+ *
+ * @version 2022-01-09
+ * @author ALTMANN
+ *
+ */
 public class Fenetre implements ActionListener {
     private JPanel panel1;
     private JTextField dureeSimulation;

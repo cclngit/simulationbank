@@ -6,6 +6,12 @@ import simulation.evenement.EvenementEcouteur;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Classe permettant de modeliser un Caissier
+ *
+ * @version 2022-01-09
+ * @author ALTMANN
+ */
 public class Caissier {
 
     private Banque travail;
@@ -25,6 +31,12 @@ public class Caissier {
         this.sonnetteProchainClient = sonnette;
     }
 
+    /**
+     * Sert les client dans l'ordre
+     *
+     * @param temps le temps d'arriver du Client
+     *
+     */
     public void prendreUnClientDansFileAttente(double temps){
 
         //  Si il y a un client dans la file d'attente, on recupere le premier
@@ -41,14 +53,33 @@ public class Caissier {
         }
     }
 
+    /**
+     * Accesseur de l'efficacite
+     *
+     * @return une efficacite
+     *
+     */
     public double getEfficacite() {
         return 1 - efficacite;
     }
 
+    /**
+     * Accesseur de l'efficacite
+     *
+     * @return une efficacite en pourcentage
+     *
+     */
     public double getEfficaciteEnPourcentage() {
         return this.getEfficacite() * 100;
     }
 
+    /**
+     * Accesseur de l'efficacite
+     *
+     * @param temps le temps d'arriver du Client
+     * @return true ou false (true si disponible)
+     *
+     */
     public boolean estDisponible(double temps) {
 
         //  S'il a deja eu un client
@@ -62,10 +93,23 @@ public class Caissier {
         return true;
     }
 
+    /**
+     * Le nombre de client servie
+     *
+     * @return un entier - le nombre de client servie
+     *
+     */
     public int nombreDeClientServis(){
         return this.clientServis.size();
     }
 
+    /**
+     * Calcul le taux d'occupation d'un Caissier
+     *
+     * @param temps le temps d'arriver du Client
+     * @return le taux d'occupation d'un Caissier
+     *
+     */
     public double tauxOccupation(double temps){
         double tempsService = 0;
         for (Client client : this.clientServis){
@@ -74,10 +118,23 @@ public class Caissier {
         return tempsService / temps;
     }
 
+    /**
+     * Calcul le taux d'occupation (%) d'un Caissier
+     *
+     * @param temps le temps d'arriver du Client
+     * @return le taux d'occupation d'un Caissier en poucentage
+     *
+     */
     public double tauxOccupationEnPourcentage(double temps){
         return this.tauxOccupation(temps) * 100;
     }
 
+    /**
+     * Calcul le taux d'occupation d'un Caissier
+     *
+     * @return le temps d'attent moyen de client
+     *
+     */
     public double tempsAttenteMoyenDeMesClient(){
         double tempsAttente = 0;
         for (Client client : this.clientServis){
