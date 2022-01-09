@@ -36,15 +36,20 @@ public class Fenetre implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == this.lancerButton){
-            double dureeSimulation; int nombreCaissier; double dureeMoyenService; double dureeEntreArriveeClient;
-            dureeSimulation = Double.parseDouble(this.dureeSimulation.getText());
-            nombreCaissier = Integer.parseInt(this.nombreCaissier.getText());
-            dureeMoyenService = Double.parseDouble(this.dureeMoyenService.getText());
-            dureeEntreArriveeClient = Double.parseDouble(this.dureeEntreArriveeClient.getText());
-            this.simulationBanque = new SimulationBanque(dureeSimulation, nombreCaissier, dureeMoyenService, dureeEntreArriveeClient);
-            this.simulationBanque.initialiser();
-            this.simulationBanque.executer();
-            this.resultatSimulation.setText(this.simulationBanque.resultat());
+            try {
+                double dureeSimulation; int nombreCaissier; double dureeMoyenService; double dureeEntreArriveeClient;
+                dureeSimulation = Double.parseDouble(this.dureeSimulation.getText());
+                nombreCaissier = Integer.parseInt(this.nombreCaissier.getText());
+                dureeMoyenService = Double.parseDouble(this.dureeMoyenService.getText());
+                dureeEntreArriveeClient = Double.parseDouble(this.dureeEntreArriveeClient.getText());
+                this.simulationBanque = new SimulationBanque(dureeSimulation, nombreCaissier, dureeMoyenService, dureeEntreArriveeClient);
+                this.simulationBanque.initialiser();
+                this.simulationBanque.executer();
+                this.resultatSimulation.setText(this.simulationBanque.resultat());
+            } catch (Exception exception){
+                this.resultatSimulation.setText("Veuillez remplir les champs avec des valeurs conforme");
+            }
         }
+
     }
 }
