@@ -28,4 +28,8 @@ On souhaite obtenir, a la fin de la simulation, les resultats suivants :
 
 - Executer le fichier JAR nommé : simulationbank.jar
 
+## Consulter le JavaDoc
+
+- Aller dans \simulationbank\javadoc et ouvrir le fichier HTML : index.html
+
 <img src="./screenshot.png">
